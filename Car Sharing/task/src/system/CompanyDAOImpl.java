@@ -1,23 +1,19 @@
 package system;
 
-import system.Company;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyDAOImpl implements ICompanyDAO {
 
-    private static final String JDBC_DRIVER = "org.h2.Driver";
+//    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:./src/carsharing/db/";
     private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS COMPANY " +
-            "(ID INTEGER not NULL AUTO_INCREMENT, " + //AUTO_INCREMENT
+            "(ID INTEGER not NULL AUTO_INCREMENT, " +
             " NAME VARCHAR(255) UNIQUE NOT NULL, " +
-            " PRIMARY KEY ( ID ))"; //PRIMARY KEY ( ID )
+            " PRIMARY KEY ( ID ))";
 
-    //    private static final String USER = "";
-//    private static final String PASS = "";
-    private String fileName = "";
+    private String fileName;
 
     public CompanyDAOImpl(String fileName) {
         this.fileName = fileName;
@@ -51,8 +47,7 @@ public class CompanyDAOImpl implements ICompanyDAO {
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT into COMPANY (name) values (?)");
-//            statement.setInt(1, company.getId());
+                    "INSERT into COMPANY (name) values (?)  ");
             statement.setString(1, company.getName());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -98,11 +93,11 @@ public class CompanyDAOImpl implements ICompanyDAO {
 
     @Override
     public void update(Company company) {
-//
+// will be realised
     }
 
     @Override
     public void delete(Company company) {
-//
+// will be realised
     }
 }

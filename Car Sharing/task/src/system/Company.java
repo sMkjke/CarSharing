@@ -10,10 +10,6 @@ public class Company {
         this.name = name;
     }
 
-    public Company(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
     }
@@ -33,7 +29,7 @@ public class Company {
     @Override
     public String toString() {
         return
-                id + 1 + ". " +
+                id + ". " +
                         name;
     }
 }
