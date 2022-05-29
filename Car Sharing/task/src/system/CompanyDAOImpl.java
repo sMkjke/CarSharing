@@ -1,6 +1,6 @@
 package system;
 
-import entitny.Company;
+import entity.Company;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package system;
 
-import entitny.Car;
-import entitny.Company;
+import entity.Car;
 
 import java.util.List;
 

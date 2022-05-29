@@ -1,6 +1,6 @@
 package system;
 
-import entitny.Company;
+import entity.Company;
 
 import java.util.List;
 
@@ -9,15 +9,20 @@ public class CarsharingSystem {
 //    private AtomicInteger companyID = new AtomicInteger(0);
     private int companyId;
     private final ICompanyDAO companyDAO;
+    private final ICarsDAO carsDAO;
 
 
     public CarsharingSystem(String fileName) {
-        this(new CompanyDAOImpl(fileName));
+        this(new CompanyDAOImpl(fileName), new CarsDAOImpl());
     }
 
-    CarsharingSystem(ICompanyDAO dao) {
-        this.companyDAO = dao;
+    CarsharingSystem(ICompanyDAO companyDAO, ICarsDAO carsDAO) {
+        this.companyDAO = companyDAO;
+        this.carsDAO = carsDAO;
     }
+
+
+
 
     public int getCompanyID() {
         return companyId;
