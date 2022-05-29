@@ -1,7 +1,7 @@
 package manager;
 
 import system.CarsharingSystem;
-import system.Company;
+import entitny.Company;
 
 import java.util.Scanner;
 
