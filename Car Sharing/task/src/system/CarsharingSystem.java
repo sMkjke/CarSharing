@@ -11,9 +11,11 @@ public class CarsharingSystem {
     private final ICompanyDAO companyDAO;
     private final ICarsDAO carsDAO;
 
+    private static final String URL = "jdbc:h2:./src/carsharing/db/";
+
 
     public CarsharingSystem(String fileName) {
-        this(new CompanyDAOImpl(fileName), new CarsDAOImpl());
+        this(new CompanyDAOImpl(fileName), new CarsDAOImpl(fileName));
     }
 
     CarsharingSystem(ICompanyDAO companyDAO, ICarsDAO carsDAO) {

@@ -6,14 +6,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyDAOImpl implements ICompanyDAO {
+public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
 
 //    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:./src/carsharing/db/";
     private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS COMPANY " +
-            "(ID INTEGER not NULL AUTO_INCREMENT, " +
+            "(PK_COMPANY_ID INTEGER not NULL AUTO_INCREMENT, " +
             " NAME VARCHAR(255) UNIQUE NOT NULL, " +
-            " PRIMARY KEY ( ID ))";
+            " PRIMARY KEY ( PK_COMPANY_ID ))";
 
     private String fileName;
 
