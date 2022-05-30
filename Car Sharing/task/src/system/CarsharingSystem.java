@@ -1,5 +1,6 @@
 package system;
 
+import entity.Car;
 import entity.Company;
 
 import java.util.List;
@@ -24,14 +25,17 @@ public class CarsharingSystem {
     }
 
 
-
-
     public int getCompanyID() {
         return companyId;
     }
 
     public void addCompanyToDB(Company company) {
         companyDAO.create(company);
+//        companyID.addAndGet(1);
+    }
+
+    public void addCarToDB(Car car) {
+        carsDAO.create(car);
 //        companyID.addAndGet(1);
     }
 
@@ -44,6 +48,18 @@ public class CarsharingSystem {
             }
         } else {
             System.out.println("The company list is empty!");
+        }
+    }
+
+    public void getAllCars() {
+        List<Car> list = carsDAO.getAll();
+        if (!list.isEmpty()) {
+            System.out.println("Car list:");
+            for (Car i : list) {
+                System.out.println(i.toString());
+            }
+        } else {
+            System.out.println("The car list is empty!");
         }
     }
 }

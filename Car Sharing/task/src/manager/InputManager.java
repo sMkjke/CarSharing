@@ -1,5 +1,6 @@
 package manager;
 
+import entity.Car;
 import system.CarsharingSystem;
 import entity.Company;
 
@@ -34,6 +35,10 @@ public class InputManager {
                             String name = scanner.nextLine();
                             Company company = new Company(carsharingSystem.getCompanyID(), name);
                             carsharingSystem.addCompanyToDB(company);
+                            // make current company to insert new cars into
+                            carsharingSystem.addCarToDB(new Car(1,"aston")); //for test
+                            carsharingSystem.getAllCars();//for test
+
                             System.out.println("The company was created!");
                             System.out.println();
                             break;
