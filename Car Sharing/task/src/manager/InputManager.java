@@ -4,6 +4,7 @@ import entity.Car;
 import system.CarsharingSystem;
 import entity.Company;
 
+import java.awt.*;
 import java.util.Scanner;
 
 public class InputManager {
@@ -24,10 +25,36 @@ public class InputManager {
                 while (secondMenuExit) {
                     secondMenu();
                     String inputTwo = scanner.next();
-
                     switch (inputTwo) {
                         case ("1"):
-                            carsharingSystem.getAllCompanies();
+                            if (carsharingSystem.getAllCompanies()) {
+                                System.out.println("0. Back");
+                                System.out.println();
+                                int chooseCompany = scanner.nextInt();
+                                Company choosenCompany = carsharingSystem.getCompany(chooseCompany);
+                                if (choosenCompany != null && chooseCompany != 0) {
+                                    System.out.println("'" + choosenCompany.getName() + "'" + " company");
+                                    while (secondMenuExit) {
+                                    carMenu();
+                                    String inputThree = scanner.next();
+//                                    while (secondMenuExit) {
+                                        switch(inputThree){
+                                            case("1"):
+                                                carsharingSystem.getAllCars(chooseCompany);
+                                                break;
+                                            case ("2"):
+//                                                scanner.next();
+                                                System.out.println("Enter the car name:");
+                                                scanner.next();
+                                                String carName = scanner.nextLine();
+                                                Car newCar = new Car(carsharingSystem.getCarId(),carName);
+                                                carsharingSystem.addCarToDB(newCar,chooseCompany);
+                                                System.out.println("The car was added!");
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         case ("2"):
                             System.out.println("Enter the company name:");
@@ -35,10 +62,6 @@ public class InputManager {
                             String name = scanner.nextLine();
                             Company company = new Company(carsharingSystem.getCompanyID(), name);
                             carsharingSystem.addCompanyToDB(company);
-                            // make current company to insert new cars into
-                            carsharingSystem.addCarToDB(new Car(1,"aston")); //for test
-                            carsharingSystem.getAllCars();//for test
-
                             System.out.println("The company was created!");
                             System.out.println();
                             break;
@@ -64,6 +87,12 @@ public class InputManager {
     private void mainMenu() {
         System.out.println("1. Log in as a manager");
         System.out.println("0. Exit");
+    }
+
+    private void carMenu(){
+        System.out.println("1. Car list\n" +
+                "2. Create a car\n" +
+                "0. Back");
     }
 }
 

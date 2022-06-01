@@ -10,10 +10,11 @@ public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
 
 //    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:./src/carsharing/db/";
-    private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS COMPANY " +
-            "(COMPANY_ID INTEGER not NULL AUTO_INCREMENT PRIMARY KEY , " +
+    private static final String CREATE_NEW_TABLE = "DROP TABLE IF EXISTS CAR;\n" +
+            "DROP TABLE IF EXISTS COMPANY;\n" +
+            "CREATE TABLE IF not EXISTS COMPANY " +
+            "(ID INTEGER not NULL AUTO_INCREMENT PRIMARY KEY , " +
             " NAME VARCHAR(255) UNIQUE NOT NULL)";
-//            " PRIMARY KEY ( PK_COMPANY_ID ))";
 
     private String fileName;
 
@@ -22,17 +23,6 @@ public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
         this.fileName = fileName;
         createIfNotExists();
     }
-
-//    private Connection connect() {
-//        try {
-//            return DriverManager.
-//                    getConnection(URL + fileName);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return null;
-//    }
-
 
     void createIfNotExists() {
         Statement stmt = null;
@@ -62,7 +52,7 @@ public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
     public Company get(int id) {
         try (Connection conn = connect(URL,fileName);
              PreparedStatement statement = conn.prepareStatement("select * from COMPANY " +
-                     "where COMPANY_ID = ? ")) {
+                     "where ID = ? ")) {
             statement.setInt(1, id);
 
             ResultSet rs = statement.executeQuery();
@@ -84,7 +74,7 @@ public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
              PreparedStatement statement = conn.prepareStatement("select * from COMPANY")) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Company company = new Company(rs.getInt("COMPANY_ID"), rs.getString("name"));
+                Company company = new Company(rs.getInt("ID"), rs.getString("name"));
                 list.add(company);
             }
             rs.close();

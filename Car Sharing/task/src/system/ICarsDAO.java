@@ -7,9 +7,9 @@ import java.util.List;
 public interface ICarsDAO {
 
 
-    void create(Car car);
+    void create(Car car, int id);
 
     Car get(int id);
 
-    List<Car> getAll();
+    List<Car> getAll(int id);
 }

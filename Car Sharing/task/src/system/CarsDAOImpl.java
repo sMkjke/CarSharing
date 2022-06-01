@@ -1,7 +1,6 @@
 package system;
 
 import entity.Car;
-import entity.Company;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,25 +8,33 @@ import java.util.List;
 
 public class CarsDAOImpl extends AConnection implements ICarsDAO {
 
-    private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS CARS  " + //IF not EXISTS
-            "(ID INTEGER AUTO_INCREMENT not NULL PRIMARY KEY, " +
-            " NAME VARCHAR(255) NOT NULL UNIQUE, " + //unique
-            "FK_COMPANY_ID INTEGER not NULL," +
-            " FOREIGN KEY (FK_COMPANY_ID) REFERENCES COMPANY( COMPANY_ID ))";
+//    private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS CARS  " + //IF not EXISTS
+//            "(ID INTEGER AUTO_INCREMENT not NULL PRIMARY KEY, " +
+//            " NAME VARCHAR(255) NOT NULL UNIQUE, " + //unique
+//            "FK_COMPANY_ID INTEGER not NULL," +
+//            " FOREIGN KEY (FK_COMPANY_ID) REFERENCES COMPANY( COMPANY_ID ))";
 
 
+    private static final String CREATE_NEW_TABLE = " " + "CREATE TABLE CAR (\n" +
+            "   ID INT PRIMARY KEY AUTO_INCREMENT,\n" +
+            "   NAME VARCHAR UNIQUE NOT NULL,\n" +
+            "   COMPANY_ID INT NOT NULL,\n" +
+            "   CONSTRAINT FK_COMPANY FOREIGN KEY (COMPANY_ID)\n" +
+            "   REFERENCES COMPANY(ID)\n" +
+            "   ON DELETE CASCADE\n" +
+            ");";
     private String fileName;
+
 
     public CarsDAOImpl(String fileName) {
         this.fileName = fileName;
         createIfNoExist();
+
     }
 
     void createIfNoExist() {
-        Statement stmt = null;
-        try {
-            Connection conn = connect(URL, fileName);
-            stmt = conn.createStatement();
+        try (Connection conn = connect(URL, fileName)) {
+            Statement stmt = conn.createStatement();
             stmt.execute(CREATE_NEW_TABLE);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,13 +42,12 @@ public class CarsDAOImpl extends AConnection implements ICarsDAO {
     }
 
     @Override
-    public void create(Car car) {
-        try {
-            Connection conn = connect(URL, fileName);
-            PreparedStatement statement = conn.prepareStatement(
-                    "INSERT into CARS (name, FK_COMPANY_ID) values (?,?)  ");
+        public void create(Car car, int companyId) {
+        try (Connection conn = connect(URL, fileName);
+             PreparedStatement statement = conn.prepareStatement(
+                     "INSERT into CAR (name, COMPANY_ID) values (?,?)")) {
             statement.setString(1, car.getName());
-            statement.setInt(2, 7); //for testing
+            statement.setInt(2, companyId);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,19 +59,23 @@ public class CarsDAOImpl extends AConnection implements ICarsDAO {
         return null;
     }
 
-    public List<Car> getAll() {
-        ArrayList<Car> list = new ArrayList<>();
+    public List<Car> getAll(int companyId) {
         try (Connection conn = connect(URL, fileName);
-             PreparedStatement statement = conn.prepareStatement("select * from CARS")) {
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                Car car = new Car(rs.getInt("ID"), rs.getString("name"));
-                list.add(car);
+             PreparedStatement statement = conn.prepareStatement("SELECT ID, NAME FROM CAR WHERE COMPANY_ID = (?);")) {
+            statement.setInt(1, companyId);
+            ResultSet carsResultSet = statement.executeQuery();
+            List<Car> cars = new ArrayList<>();
+
+            while (carsResultSet.next()) {
+                Integer id = carsResultSet.getInt("ID");
+                String name = carsResultSet.getString("NAME");
+                Car car = new Car(id, name);
+                cars.add(car);
             }
-            rs.close();
+
+            return cars;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return list;
     }
 }
