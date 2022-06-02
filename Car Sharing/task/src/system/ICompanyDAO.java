@@ -1,5 +1,7 @@
 package system;
 
+import entity.Company;
+
 import java.util.List;
 
 public interface ICompanyDAO {

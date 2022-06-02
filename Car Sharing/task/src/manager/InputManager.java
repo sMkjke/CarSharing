@@ -1,8 +1,8 @@
 package manager;
 
+import entity.Car;
 import system.CarsharingSystem;
-import system.Company;
-
+import entity.Company;
 import java.util.Scanner;
 
 public class InputManager {
@@ -19,14 +19,44 @@ public class InputManager {
             mainMenu();
             String input = scanner.next();
             boolean secondMenuExit = true;
+            boolean thirdMenuExit;
             if (input.equals("1")) {
                 while (secondMenuExit) {
                     secondMenu();
                     String inputTwo = scanner.next();
-
                     switch (inputTwo) {
                         case ("1"):
-                            carsharingSystem.getAllCompanies();
+                            if (carsharingSystem.getAllCompanies()) {
+                                System.out.println("0. Back");
+                                System.out.println();
+                                int chooseCompany = scanner.nextInt();
+                                Company choosenCompany = carsharingSystem.getCompany(chooseCompany);
+                                if (choosenCompany != null && chooseCompany != 0) {
+                                    System.out.println("'" + choosenCompany.getName() + "'" + " company");
+                                    thirdMenuExit = true;
+                                    while (thirdMenuExit) {
+                                        carMenu();
+                                        String inputThree = scanner.next();
+                                        switch (inputThree) {
+                                            case ("1"):
+                                                carsharingSystem.getAllCars(chooseCompany);
+                                                System.out.println();
+                                                break;
+                                            case ("2"):
+                                                System.out.println("Enter the car name:");
+                                                scanner.nextLine();
+                                                String carName = scanner.nextLine();
+                                                Car newCar = new Car(carsharingSystem.getCarId(), carName);
+                                                carsharingSystem.addCarToDB(newCar, chooseCompany);
+                                                System.out.println("The car was added!");
+                                                break;
+                                            case ("0"):
+                                                thirdMenuExit = false;
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         case ("2"):
                             System.out.println("Enter the company name:");
@@ -59,6 +89,12 @@ public class InputManager {
     private void mainMenu() {
         System.out.println("1. Log in as a manager");
         System.out.println("0. Exit");
+    }
+
+    private void carMenu() {
+        System.out.println("1. Car list\n" +
+                "2. Create a car\n" +
+                "0. Back");
     }
 }
 

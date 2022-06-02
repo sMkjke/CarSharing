@@ -1,40 +1,32 @@
 package system;
 
+import entity.Company;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyDAOImpl implements ICompanyDAO {
+public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
 
-//    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:./src/carsharing/db/";
-    private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS COMPANY " +
-            "(ID INTEGER not NULL AUTO_INCREMENT, " +
-            " NAME VARCHAR(255) UNIQUE NOT NULL, " +
-            " PRIMARY KEY ( ID ))";
+    private static final String CREATE_NEW_TABLE = "DROP TABLE IF EXISTS CAR;\n" +
+            "DROP TABLE IF EXISTS COMPANY;\n" +
+            "CREATE TABLE IF not EXISTS COMPANY " +
+            "(ID INTEGER not NULL AUTO_INCREMENT PRIMARY KEY , " +
+            " NAME VARCHAR(255) UNIQUE NOT NULL)";
 
     private String fileName;
+
 
     public CompanyDAOImpl(String fileName) {
         this.fileName = fileName;
         createIfNotExists();
     }
 
-    private Connection connect() {
-        try {
-            return DriverManager.
-                    getConnection(URL + fileName);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
-
     void createIfNotExists() {
         Statement stmt = null;
         try {
-            Connection conn = this.connect();
+            Connection conn = connect(URL,fileName);
             stmt = conn.createStatement();
             stmt.execute(CREATE_NEW_TABLE);
         } catch (SQLException e) {
@@ -45,7 +37,7 @@ public class CompanyDAOImpl implements ICompanyDAO {
     @Override
     public void create(Company company) {
         try {
-            Connection conn = this.connect();
+            Connection conn = connect(URL,fileName);
             PreparedStatement statement = conn.prepareStatement(
                     "INSERT into COMPANY (name) values (?)  ");
             statement.setString(1, company.getName());
@@ -57,7 +49,7 @@ public class CompanyDAOImpl implements ICompanyDAO {
 
     @Override
     public Company get(int id) {
-        try (Connection conn = this.connect();
+        try (Connection conn = connect(URL,fileName);
              PreparedStatement statement = conn.prepareStatement("select * from COMPANY " +
                      "where ID = ? ")) {
             statement.setInt(1, id);
@@ -77,7 +69,7 @@ public class CompanyDAOImpl implements ICompanyDAO {
 
     public List<Company> getAll() {
         ArrayList<Company> list = new ArrayList<>();
-        try (Connection conn = this.connect();
+        try (Connection conn = connect(URL,fileName);
              PreparedStatement statement = conn.prepareStatement("select * from COMPANY")) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -93,11 +85,9 @@ public class CompanyDAOImpl implements ICompanyDAO {
 
     @Override
     public void update(Company company) {
-// will be realised
     }
 
     @Override
     public void delete(Company company) {
-// will be realised
     }
 }

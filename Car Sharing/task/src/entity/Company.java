@@ -1,4 +1,4 @@
-package system;
+package entity;
 
 public class Company {
 
