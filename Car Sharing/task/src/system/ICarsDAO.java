@@ -12,4 +12,5 @@ public interface ICarsDAO {
     Car get(int id);
 
     List<Car> getAll(int id);
+
 }

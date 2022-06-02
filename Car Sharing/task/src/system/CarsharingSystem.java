@@ -2,19 +2,12 @@ package system;
 
 import entity.Car;
 import entity.Company;
-
-import java.nio.channels.AcceptPendingException;
 import java.util.List;
 
 public class CarsharingSystem {
-
-//    private AtomicInteger companyID = new AtomicInteger(0);
-    private int companyId;
-    private int carId;
     private final ICompanyDAO companyDAO;
     private final ICarsDAO carsDAO;
 
-//    private static final String URL = "jdbc:h2:./src/carsharing/db/";
 
 
     public CarsharingSystem(String fileName) {
@@ -26,18 +19,8 @@ public class CarsharingSystem {
         this.carsDAO = carsDAO;
     }
 
-
-    public int getCompanyID() {
-        return companyId;
-    }
-
-    public int getCarId() {
-        return carId;
-    }
-
     public void addCompanyToDB(Company company) {
         companyDAO.create(company);
-//        companyID.addAndGet(1);
     }
 
     public void addCarToDB(Car car, int id) {
@@ -68,7 +51,7 @@ public class CarsharingSystem {
         if (!list.isEmpty()) {
             System.out.println("Car list:");
             for (Car i : list) {
-                System.out.println(i.toString());
+                System.out.println((list.indexOf(i)+1) + i.toString());
             }
         } else {
             System.out.println("The car list is empty!");

@@ -8,23 +8,15 @@ import java.util.List;
 
 public class CarsDAOImpl extends AConnection implements ICarsDAO {
 
-//    private static final String CREATE_NEW_TABLE = "CREATE TABLE IF not EXISTS CARS  " + //IF not EXISTS
-//            "(ID INTEGER AUTO_INCREMENT not NULL PRIMARY KEY, " +
-//            " NAME VARCHAR(255) NOT NULL UNIQUE, " + //unique
-//            "FK_COMPANY_ID INTEGER not NULL," +
-//            " FOREIGN KEY (FK_COMPANY_ID) REFERENCES COMPANY( COMPANY_ID ))";
-
-
     private static final String CREATE_NEW_TABLE = " " + "CREATE TABLE CAR (\n" +
             "   ID INT PRIMARY KEY AUTO_INCREMENT,\n" +
-            "   NAME VARCHAR UNIQUE NOT NULL,\n" +
+            "   NAME VARCHAR(255) UNIQUE NOT NULL,\n" +
             "   COMPANY_ID INT NOT NULL,\n" +
             "   CONSTRAINT FK_COMPANY FOREIGN KEY (COMPANY_ID)\n" +
             "   REFERENCES COMPANY(ID)\n" +
             "   ON DELETE CASCADE\n" +
             ");";
     private String fileName;
-
 
     public CarsDAOImpl(String fileName) {
         this.fileName = fileName;
@@ -42,7 +34,7 @@ public class CarsDAOImpl extends AConnection implements ICarsDAO {
     }
 
     @Override
-        public void create(Car car, int companyId) {
+    public void create(Car car, int companyId) {
         try (Connection conn = connect(URL, fileName);
              PreparedStatement statement = conn.prepareStatement(
                      "INSERT into CAR (name, COMPANY_ID) values (?,?)")) {
@@ -72,7 +64,6 @@ public class CarsDAOImpl extends AConnection implements ICarsDAO {
                 Car car = new Car(id, name);
                 cars.add(car);
             }
-
             return cars;
         } catch (SQLException e) {
             throw new RuntimeException(e);

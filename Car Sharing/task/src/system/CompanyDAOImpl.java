@@ -8,7 +8,6 @@ import java.util.List;
 
 public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
 
-//    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:./src/carsharing/db/";
     private static final String CREATE_NEW_TABLE = "DROP TABLE IF EXISTS CAR;\n" +
             "DROP TABLE IF EXISTS COMPANY;\n" +
@@ -86,11 +85,9 @@ public class CompanyDAOImpl extends AConnection implements ICompanyDAO{
 
     @Override
     public void update(Company company) {
-// will be realised
     }
 
     @Override
     public void delete(Company company) {
-// will be realised
     }
 }
